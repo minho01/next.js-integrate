@@ -34,7 +34,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/adm/**").hasRole("ADMIN")
                         .requestMatchers("/api/*/**").authenticated()
                         .anyRequest().authenticated())
-                .csrf(( csrf) -> csrf.disable())
+                .csrf((csrf) -> csrf.disable())
                 .headers((headers) -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .exceptionHandling(
                         exceptionHandling -> exceptionHandling
                                 .authenticationEntryPoint((request, response, authenticationException) -> {
-                                    response.setContentType("application/json");
+                                    response.setContentType("application/json; charset=UTF-8");
                                     response.setStatus(401);
                                     response.getWriter().write(
                                             """
@@ -53,7 +53,7 @@ public class SecurityConfig {
                                                     """);
                                 })
                                 .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                            response.setContentType("application/json");
+                                            response.setContentType("application/json; charset=UTF-8");
                                             response.setStatus(403);
                                             response.getWriter().write(
                                                     """
@@ -63,14 +63,15 @@ public class SecurityConfig {
                                                                 }
                                                             """);
                                         }
-                                ));;
+                                ));
+        ;
 
         return http.build();
     }
 
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration =new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of("https://cdpn.io", "http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
