@@ -3,7 +3,7 @@
 import { fetchApi } from "@/lib/client";
 import { useRouter } from "next/navigation";
 
-export default function Write() {
+export default function Login() {
 
     const router = useRouter();
 

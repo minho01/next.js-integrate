@@ -19,3 +19,8 @@ export function fetchApi(url: string, options?: RequestInit) {
         }
     )
 }
+
+export type FetchCallbacks = {
+    onSuccess?: (data: any) => void;
+    onError?: (err: any) => void;
+};
