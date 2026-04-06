@@ -1,40 +1,8 @@
 'use client';
-import { fetchApi, FetchCallbacks } from "@/lib/client";
+import { AuthProvider, useAuth } from "@/global/auth/hook/useAuth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
-
-const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null);
-
-function useAuth() {
-
-    const [loginMember, setLoginMember] = useState<MemberDto | null>(null);
-
-    const getLoginMember = () => {
-        fetchApi("/api/v1/members/me")
-            .then((memberDto) => {
-                setLoginMember(memberDto);
-            })
-            .catch((err) => {
-            });
-    }
-
-    const logout = (callbacks: FetchCallbacks) => {
-        confirm("로그아웃 하시겠습니까?") &&
-            fetchApi("/api/v1/members/logout", {
-                method: "DELETE",
-            })
-                .then((data) => {
-                    setLoginMember(null);
-                    alert(data.msg);
-                })
-                .catch((rsData) => {
-                    alert(rsData.msg);
-                });
-    };
-
-    return { loginMember, getLoginMember, logout };
-}
 
 export default function ClientLayout({ children }: {
     children: React.ReactNode;
@@ -51,7 +19,7 @@ export default function ClientLayout({ children }: {
 
     return (
         <>
-            <AuthContext.Provider value={authState}>
+            <AuthProvider>
                 <header>
                     <nav className="flex gap-4">
                         <Link href="/">메인</Link>
@@ -65,7 +33,7 @@ export default function ClientLayout({ children }: {
                     {children}
                 </main>
                 <footer>푸터</footer>
-            </AuthContext.Provider>
+            </AuthProvider>
         </>
     )
 }

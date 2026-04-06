@@ -1,5 +1,16 @@
 import { fetchApi } from "@/lib/client";
-import { useState } from "react";
+import { createContext, useState } from "react";
+
+
+const AuthContext = createContext<ReturnType<typeof useAuth> | null>(null);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+    const authState = useAuth();
+
+    return (
+        <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>
+    );
+}
 
 export function useAuth() {
 
