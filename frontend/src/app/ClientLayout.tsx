@@ -28,6 +28,7 @@ export default function ClientLayout({ children }: {
             })
                 .then((data) => {
                     alert(data.msg);
+                    setLoginMember(null);
                 })
                 .catch((rsData) => {
                     alert(rsData.msg);
